@@ -75,60 +75,54 @@ ButtonMappingFactory::CreateDefaultKeyboardButtonMappings(uint8_t portIndex, CON
 
     switch (bitmask) {
         case BTN_A:
-            mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_A, LUS_DEFAULT_KB_MAPPING_A));
+            mappings.push_back(std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_A, KbScancode::LUS_KB_X));
             break;
         case BTN_B:
-            mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_B, LUS_DEFAULT_KB_MAPPING_B));
+            mappings.push_back(std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_B, KbScancode::LUS_KB_C));
             break;
         case BTN_L:
-            mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_L, LUS_DEFAULT_KB_MAPPING_L));
+            mappings.push_back(std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_L, KbScancode::LUS_KB_E));
             break;
         case BTN_R:
-            mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_R, LUS_DEFAULT_KB_MAPPING_R));
+            mappings.push_back(std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_R, KbScancode::LUS_KB_R));
             break;
         case BTN_Z:
-            mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_Z, LUS_DEFAULT_KB_MAPPING_Z));
+            mappings.push_back(std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_Z, KbScancode::LUS_KB_Z));
             break;
         case BTN_START:
             mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_START, LUS_DEFAULT_KB_MAPPING_START));
+                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_START, KbScancode::LUS_KB_SPACE));
             break;
         case BTN_CUP:
             mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_CUP, LUS_DEFAULT_KB_MAPPING_CUP));
+                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_CUP, KbScancode::LUS_KB_ARROWKEY_UP));
             break;
         case BTN_CDOWN:
             mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_CDOWN, LUS_DEFAULT_KB_MAPPING_CDOWN));
+                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_CDOWN, KbScancode::LUS_KB_ARROWKEY_DOWN));
             break;
         case BTN_CLEFT:
             mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_CLEFT, LUS_DEFAULT_KB_MAPPING_CLEFT));
+                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_CLEFT, KbScancode::LUS_KB_ARROWKEY_LEFT));
             break;
         case BTN_CRIGHT:
             mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_CRIGHT, LUS_DEFAULT_KB_MAPPING_CRIGHT));
+                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_CRIGHT, KbScancode::LUS_KB_ARROWKEY_RIGHT));
             break;
         case BTN_DUP:
-            mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_DUP, LUS_DEFAULT_KB_MAPPING_DUP));
+            mappings.push_back(std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_DUP, KbScancode::LUS_KB_T));
             break;
         case BTN_DDOWN:
             mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_DDOWN, LUS_DEFAULT_KB_MAPPING_DDOWN));
+                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_DDOWN, KbScancode::LUS_KB_G));
             break;
         case BTN_DLEFT:
             mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_DLEFT, LUS_DEFAULT_KB_MAPPING_DLEFT));
+                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_DLEFT, KbScancode::LUS_KB_F));
             break;
         case BTN_DRIGHT:
             mappings.push_back(
-                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_DRIGHT, LUS_DEFAULT_KB_MAPPING_DRIGHT));
+                std::make_shared<KeyboardKeyToButtonMapping>(portIndex, BTN_DRIGHT, KbScancode::LUS_KB_H));
             break;
     }
 

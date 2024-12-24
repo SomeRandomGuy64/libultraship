@@ -3,6 +3,7 @@
 #include "spdlog/spdlog.h"
 
 #include "Context.h"
+#include "resource/GameVersions.h"
 #include "resource/File.h"
 #include "resource/ResourceLoader.h"
 #include "utils/binarytools/MemoryStream.h"
@@ -12,16 +13,12 @@
 
 namespace Ship {
 Archive::Archive(const std::string& path)
-    : mIsLoaded(false), mHasGameVersion(false), mGameVersion(0xFFFFFFFF), mPath(path) {
+    : mIsLoaded(false), mHasGameVersion(false), mGameVersion(UNKNOWN_GAME_VERSION), mPath(path) {
     mHashes = std::make_shared<std::unordered_map<uint64_t, std::string>>();
 }
 
 Archive::~Archive() {
     SPDLOG_TRACE("destruct archive: {}", GetPath());
-}
-
-bool Archive::operator==(const Archive& rhs) const {
-    return mPath == rhs.mPath;
 }
 
 void Archive::Load() {
@@ -235,8 +232,6 @@ std::shared_ptr<File> Archive::LoadFile(const std::string& filePath, std::shared
             fileToLoad->Reader = CreateXMLReader(fileToLoad);
             break;
     }
-
-    fileToLoad->InitData->Parent = shared_from_this();
 
     return fileToLoad;
 }

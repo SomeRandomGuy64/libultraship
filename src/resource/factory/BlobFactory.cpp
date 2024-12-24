@@ -2,7 +2,7 @@
 #include "resource/type/Blob.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
+namespace LUS {
 std::shared_ptr<Ship::IResource> ResourceFactoryBinaryBlobV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
         return nullptr;
@@ -21,4 +21,4 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryBlobV0::ReadResource(std::
 
     return blob;
 }
-} // namespace Ship
+} // namespace LUS

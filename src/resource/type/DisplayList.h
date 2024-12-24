@@ -5,7 +5,7 @@
 #include "public/bridge/gfxbridge.h"
 #include <libultraship/libultra/gbi.h>
 
-namespace Fast {
+namespace LUS {
 class DisplayList : public Ship::Resource<Gfx> {
   public:
     using Resource::Resource;
@@ -20,4 +20,4 @@ class DisplayList : public Ship::Resource<Gfx> {
     std::vector<Gfx> Instructions;
     std::vector<char*> Strings;
 };
-} // namespace Fast
+} // namespace LUS

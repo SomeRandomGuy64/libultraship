@@ -14,7 +14,7 @@ namespace Ship {
 
 class ControllerStick {
   public:
-    ControllerStick(uint8_t portIndex, StickIndex stickIndex);
+    ControllerStick(uint8_t portIndex, Stick stick);
     ~ControllerStick();
 
     void ReloadAllMappingsFromConfig();
@@ -54,7 +54,7 @@ class ControllerStick {
     bool ProcessKeyboardEvent(KbEventType eventType, KbScancode scancode);
 
     bool HasMappingsForShipDeviceIndex(ShipDeviceIndex lusIndex);
-    StickIndex GetStickIndex();
+    Stick LeftOrRightStick();
 
   private:
     double GetClosestNotch(double angle, double approximationThreshold);
@@ -62,7 +62,7 @@ class ControllerStick {
     float GetAxisDirectionValue(Direction direction);
 
     uint8_t mPortIndex;
-    StickIndex mStickIndex;
+    Stick mStick;
 
     uint8_t mSensitivityPercentage;
     float mSensitivity;

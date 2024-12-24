@@ -15,7 +15,7 @@ class WasapiAudioPlayer : public AudioPlayer, public IMMNotificationClient {
     WasapiAudioPlayer(AudioSettings settings) : AudioPlayer(settings) {
     }
 
-    int Buffered();
+    int Buffered(void);
     void Play(const uint8_t* buf, size_t len);
 
   protected:
@@ -28,8 +28,8 @@ class WasapiAudioPlayer : public AudioPlayer, public IMMNotificationClient {
     virtual ULONG STDMETHODCALLTYPE Release();
     virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, VOID** ppvInterface);
     void ThrowIfFailed(HRESULT res);
-    bool SetupStream();
-    bool DoInit();
+    bool SetupStream(void);
+    bool DoInit(void);
 
   private:
     ComPtr<IMMDeviceEnumerator> mDeviceEnumerator;

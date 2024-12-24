@@ -245,14 +245,6 @@ void Metal_NewFrame(SDL_Renderer* renderer) {
     ImGui_ImplMetal_NewFrame(current_render_pass);
 }
 
-void Metal_SetupFloatingFrame() {
-    // We need the descriptor for the main framebuffer and to clear the existing depth attachment
-    // so that we can set ImGui up again for our floating windows. Helps avoid Metal API validation issues.
-    MTL::RenderPassDescriptor* current_render_pass = mctx.framebuffers[0].render_pass_descriptor;
-    current_render_pass->setDepthAttachment(nullptr);
-    ImGui_ImplMetal_NewFrame(current_render_pass);
-}
-
 void Metal_RenderDrawData(ImDrawData* draw_data) {
     auto framebuffer = mctx.framebuffers[0];
 
@@ -277,9 +269,9 @@ static int gfx_metal_get_max_texture_size() {
 }
 
 // Forward declare this method
-int gfx_metal_create_framebuffer();
+int gfx_metal_create_framebuffer(void);
 
-static void gfx_metal_init() {
+static void gfx_metal_init(void) {
     // Create the default framebuffer which represents the window
     FramebufferMetal& fb = mctx.framebuffers[gfx_metal_create_framebuffer()];
     fb.msaa_level = 1;
@@ -454,7 +446,7 @@ static void gfx_metal_shader_get_info(struct ShaderProgram* prg, uint8_t* num_in
     used_textures[1] = p->used_textures[1];
 }
 
-static uint32_t gfx_metal_new_texture() {
+static uint32_t gfx_metal_new_texture(void) {
     mctx.textures.resize(mctx.textures.size() + 1);
     return (uint32_t)(mctx.textures.size() - 1);
 }
@@ -653,10 +645,10 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
     autorelease_pool->release();
 }
 
-static void gfx_metal_on_resize() {
+static void gfx_metal_on_resize(void) {
 }
 
-static void gfx_metal_start_frame() {
+static void gfx_metal_start_frame(void) {
     mctx.frame_uniforms.frameCount++;
     if (mctx.frame_uniforms.frameCount > 150) {
         // No high values, as noise starts to look ugly
@@ -677,7 +669,7 @@ static void gfx_metal_start_frame() {
     mctx.frame_autorelease_pool = NS::AutoreleasePool::alloc()->init();
 }
 
-void gfx_metal_end_frame() {
+void gfx_metal_end_frame(void) {
     std::set<int>::iterator it = mctx.drawn_framebuffers.begin();
     it++;
 
@@ -723,10 +715,10 @@ void gfx_metal_end_frame() {
     mctx.frame_autorelease_pool->release();
 }
 
-static void gfx_metal_finish_render() {
+static void gfx_metal_finish_render(void) {
 }
 
-int gfx_metal_create_framebuffer() {
+int gfx_metal_create_framebuffer(void) {
     uint32_t texture_id = gfx_metal_new_texture();
     TextureDataMetal& t = mctx.textures[texture_id];
 
@@ -1291,7 +1283,7 @@ void gfx_metal_set_texture_filter(FilteringMode mode) {
     gfx_texture_cache_clear();
 }
 
-FilteringMode gfx_metal_get_texture_filter() {
+FilteringMode gfx_metal_get_texture_filter(void) {
     return mctx.current_filter_mode;
 }
 
@@ -1299,7 +1291,7 @@ ImTextureID gfx_metal_get_texture_by_id(int fb_id) {
     return (void*)mctx.textures[fb_id].texture;
 }
 
-void gfx_metal_enable_srgb_mode() {
+void gfx_metal_enable_srgb_mode(void) {
     mctx.srgb_mode = true;
 }
 

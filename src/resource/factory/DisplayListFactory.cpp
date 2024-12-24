@@ -4,7 +4,7 @@
 #include "libultraship/libultra/gbi.h"
 #include "graphic/Fast3D/lus_gbi.h"
 
-namespace Fast {
+namespace LUS {
 std::unordered_map<std::string, uint32_t> renderModes = {
     { "G_RM_ZB_OPA_SURF", G_RM_ZB_OPA_SURF },
     { "G_RM_AA_ZB_OPA_SURF", G_RM_AA_ZB_OPA_SURF },
@@ -1127,4 +1127,4 @@ std::shared_ptr<Ship::IResource> ResourceFactoryXMLDisplayListV0::ReadResource(s
 
     return dl;
 }
-} // namespace Fast
+} // namespace LUS

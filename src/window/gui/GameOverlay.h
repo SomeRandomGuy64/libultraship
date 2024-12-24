@@ -9,7 +9,6 @@
 #endif
 #include <imgui.h>
 #include <unordered_map>
-#include "resource/ResourceManager.h"
 
 namespace Ship {
 
@@ -28,8 +27,7 @@ class GameOverlay {
     ~GameOverlay();
 
     void Init();
-    void LoadFont(const std::string& name, float fontSize, const ResourceIdentifier& identifier);
-    void LoadFont(const std::string& name, float fontSize, const std::string& path);
+    void LoadFont(const std::string& name, float fontSize, const std::string& path, uintptr_t owner = 0);
     void SetCurrentFont(const std::string& name);
     void Draw();
     void DrawSettings();

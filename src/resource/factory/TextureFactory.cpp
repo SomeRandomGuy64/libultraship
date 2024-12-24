@@ -2,7 +2,7 @@
 #include "resource/type/Texture.h"
 #include "spdlog/spdlog.h"
 
-namespace Fast {
+namespace LUS {
 
 std::shared_ptr<Ship::IResource> ResourceFactoryBinaryTextureV0::ReadResource(std::shared_ptr<Ship::File> file) {
     if (!FileHasValidFormatAndReader(file)) {
@@ -44,4 +44,4 @@ std::shared_ptr<Ship::IResource> ResourceFactoryBinaryTextureV1::ReadResource(st
 
     return texture;
 }
-} // namespace Fast
+} // namespace LUS

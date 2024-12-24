@@ -23,11 +23,9 @@ class Context {
     static std::shared_ptr<Context> GetInstance();
     static std::shared_ptr<Context> CreateInstance(const std::string name, const std::string shortName,
                                                    const std::string configFilePath,
-                                                   const std::vector<std::string>& archivePaths = {},
+                                                   const std::vector<std::string>& otrFiles = {},
                                                    const std::unordered_set<uint32_t>& validHashes = {},
-                                                   uint32_t reservedThreadCount = 1, AudioSettings audioSettings = {},
-                                                   std::shared_ptr<Window> window = nullptr,
-                                                   std::shared_ptr<ControlDeck> controlDeck = nullptr);
+                                                   uint32_t reservedThreadCount = 1, AudioSettings audioSettings = {});
     static std::shared_ptr<Context> CreateUninitializedInstance(const std::string name, const std::string shortName,
                                                                 const std::string configFilePath);
     static std::string GetAppBundlePath();
@@ -39,9 +37,8 @@ class Context {
     Context(std::string name, std::string shortName, std::string configFilePath);
     ~Context();
 
-    bool Init(const std::vector<std::string>& archivePaths, const std::unordered_set<uint32_t>& validHashes,
-              uint32_t reservedThreadCount, AudioSettings audioSettings, std::shared_ptr<Window> window = nullptr,
-              std::shared_ptr<ControlDeck> controlDeck = nullptr);
+    void Init(const std::vector<std::string>& otrFiles, const std::unordered_set<uint32_t>& validHashes,
+              uint32_t reservedThreadCount, AudioSettings audioSettings);
 
     std::shared_ptr<spdlog::logger> GetLogger();
     std::shared_ptr<Config> GetConfig();
@@ -54,20 +51,21 @@ class Context {
     std::shared_ptr<Audio> GetAudio();
     std::shared_ptr<Fast::GfxDebugger> GetGfxDebugger();
 
+    std::string GetConfigFilePath();
     std::string GetName();
     std::string GetShortName();
 
-    bool InitLogging();
-    bool InitConfiguration();
-    bool InitConsoleVariables();
-    bool InitResourceManager(const std::vector<std::string>& archivePaths = {},
+    void InitLogging();
+    void InitConfiguration();
+    void InitConsoleVariables();
+    void InitResourceManager(const std::vector<std::string>& otrFiles = {},
                              const std::unordered_set<uint32_t>& validHashes = {}, uint32_t reservedThreadCount = 1);
-    bool InitControlDeck(std::shared_ptr<ControlDeck> controlDeck = nullptr);
-    bool InitCrashHandler();
-    bool InitAudio(AudioSettings settings);
-    bool InitGfxDebugger();
-    bool InitConsole();
-    bool InitWindow(std::shared_ptr<Window> window = nullptr);
+    void InitControlDeck(std::vector<CONTROLLERBUTTONS_T> additionalBitmasks = {});
+    void InitCrashHandler();
+    void InitAudio(AudioSettings settings);
+    void InitGfxDebugger();
+    void InitConsole();
+    void InitWindow(std::vector<std::shared_ptr<GuiWindow>> guiWindows = {});
 
   protected:
     Context() = default;

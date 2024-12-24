@@ -4,7 +4,7 @@
 
 extern "C" {
 
-int32_t AudioPlayerBuffered() {
+int32_t AudioPlayerBuffered(void) {
     auto audio = Ship::Context::GetInstance()->GetAudio()->GetAudioPlayer();
     if (audio == nullptr) {
         return 0;
@@ -17,7 +17,7 @@ int32_t AudioPlayerBuffered() {
     return audio->Buffered();
 }
 
-int32_t AudioPlayerGetDesiredBuffered() {
+int32_t AudioPlayerGetDesiredBuffered(void) {
     auto audio = Ship::Context::GetInstance()->GetAudio()->GetAudioPlayer();
     if (audio == nullptr) {
         return 0;

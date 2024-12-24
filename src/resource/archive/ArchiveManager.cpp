@@ -31,10 +31,10 @@ void ArchiveManager::Init(const std::vector<std::string>& archivePaths,
 
 ArchiveManager::~ArchiveManager() {
     SPDLOG_TRACE("destruct archive manager");
-    SetArchives(nullptr);
+    SetArchives({});
 }
 
-bool ArchiveManager::IsLoaded() {
+bool ArchiveManager::IsArchiveLoaded() {
     return !mArchives.empty();
 }
 
@@ -48,12 +48,14 @@ std::shared_ptr<File> ArchiveManager::LoadFile(const std::string& filePath,
 }
 
 std::shared_ptr<File> ArchiveManager::LoadFile(uint64_t hash, std::shared_ptr<ResourceInitData> initData) {
-    auto archive = mFileToArchive[hash];
+    const auto archive = mFileToArchive[hash];
     if (archive == nullptr) {
         return nullptr;
     }
 
-    return archive->LoadFile(hash, initData);
+    auto file = archive->LoadFile(hash, initData);
+    file->Parent = archive;
+    return file;
 }
 
 bool ArchiveManager::HasFile(const std::string& filePath) {
@@ -64,41 +66,10 @@ bool ArchiveManager::HasFile(uint64_t hash) {
     return mFileToArchive.count(hash) > 0;
 }
 
-std::shared_ptr<std::vector<std::string>> ArchiveManager::ListFiles(const std::string& searchMask) {
-    std::list<std::string> includes = {};
-    if (searchMask.size() > 0) {
-        includes.push_back(searchMask);
-    }
-    return ListFiles({ searchMask }, {});
-}
-
-std::shared_ptr<std::vector<std::string>> ArchiveManager::ListFiles(const std::list<std::string>& includes,
-                                                                    const std::list<std::string>& excludes) {
+std::shared_ptr<std::vector<std::string>> ArchiveManager::ListFiles(const std::string& filter) {
     auto list = std::make_shared<std::vector<std::string>>();
     for (const auto& [hash, path] : mHashes) {
-        if (includes.empty() && excludes.empty()) {
-            list->push_back(path);
-            continue;
-        }
-        bool includeMatch = includes.empty();
-        if (!includes.empty()) {
-            for (std::string filter : includes) {
-                if (glob_match(filter.c_str(), path.c_str())) {
-                    includeMatch = true;
-                    break;
-                }
-            }
-        }
-        bool excludeMatch = false;
-        if (!excludes.empty()) {
-            for (std::string filter : excludes) {
-                if (glob_match(filter.c_str(), path.c_str())) {
-                    excludeMatch = true;
-                    break;
-                }
-            }
-        }
-        if (includeMatch && !excludeMatch) {
+        if (filter.empty() || glob_match(filter.c_str(), path.c_str())) {
             list->push_back(path);
         }
     }
@@ -113,12 +84,8 @@ void ArchiveManager::AddGameVersion(uint32_t newGameVersion) {
     mGameVersions.push_back(newGameVersion);
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<Archive>>> ArchiveManager::GetArchives() {
-    auto archives = std::make_shared<std::vector<std::shared_ptr<Archive>>>();
-    for (const auto& archive : mArchives) {
-        archives->push_back(archive);
-    }
-    return archives;
+std::vector<std::shared_ptr<Archive>> ArchiveManager::GetArchives() {
+    return mArchives;
 }
 
 void ArchiveManager::ResetVirtualFileSystem() {
@@ -153,15 +120,8 @@ size_t ArchiveManager::RemoveArchive(std::shared_ptr<Archive> archive) {
     return RemoveArchive(archive->GetPath());
 }
 
-void ArchiveManager::SetArchives(std::shared_ptr<std::vector<std::shared_ptr<Archive>>> archives) {
-    mArchives.clear();
-
-    if (archives) {
-        for (const auto& archive : *archives) {
-            mArchives.push_back(archive);
-        }
-    }
-
+void ArchiveManager::SetArchives(const std::vector<std::shared_ptr<Archive>>& archives) {
+    mArchives = archives;
     ResetVirtualFileSystem();
 }
 

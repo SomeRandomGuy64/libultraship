@@ -201,6 +201,14 @@ nlohmann::json Config::GetNestedJson() {
     return mNestedJson;
 }
 
+nlohmann::json Config::GetFlattenedJson() {
+    return mFlattenedJson;
+}
+
+bool Config::IsNewInstance() {
+    return mIsNewInstance;
+}
+
 AudioBackend Config::GetCurrentAudioBackend() {
     std::string backendName = GetString("Window.AudioBackend");
     if (backendName == "wasapi") {
@@ -278,7 +286,7 @@ void Config::SetWindowBackend(WindowBackend backend) {
     }
 }
 
-bool Config::RegisterVersionUpdater(std::shared_ptr<ConfigVersionUpdater> versionUpdater) {
+bool Config::RegisterConfigVersionUpdater(std::shared_ptr<ConfigVersionUpdater> versionUpdater) {
     auto [_, emplaced] = mVersionUpdaters.emplace(versionUpdater->GetVersion(), versionUpdater);
     return emplaced;
 }

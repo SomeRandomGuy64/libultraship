@@ -185,40 +185,6 @@ int32_t Fast3dWindow::GetPosY() {
     return posY;
 }
 
-void Fast3dWindow::SetMousePos(Ship::Coords pos) {
-    mWindowManagerApi->set_mouse_pos(pos.x, pos.y);
-}
-
-Ship::Coords Fast3dWindow::GetMousePos() {
-    int32_t x, y;
-    mWindowManagerApi->get_mouse_pos(&x, &y);
-    return { x, y };
-}
-
-Ship::Coords Fast3dWindow::GetMouseDelta() {
-    int32_t x, y;
-    mWindowManagerApi->get_mouse_delta(&x, &y);
-    return { x, y };
-}
-
-Ship::CoordsF Fast3dWindow::GetMouseWheel() {
-    float x, y;
-    mWindowManagerApi->get_mouse_wheel(&x, &y);
-    return { x, y };
-}
-
-bool Fast3dWindow::GetMouseState(Ship::MouseBtn btn) {
-    return mWindowManagerApi->get_mouse_state(static_cast<uint32_t>(btn));
-}
-
-void Fast3dWindow::SetMouseCapture(bool capture) {
-    mWindowManagerApi->set_mouse_capture(capture);
-}
-
-bool Fast3dWindow::IsMouseCaptured() {
-    return mWindowManagerApi->is_mouse_captured();
-}
-
 uint32_t Fast3dWindow::GetCurrentRefreshRate() {
     uint32_t refreshRate;
     mWindowManagerApi->get_active_window_refresh_rate(&refreshRate);
@@ -282,7 +248,7 @@ bool Fast3dWindow::KeyDown(int32_t scancode) {
     return isProcessed;
 }
 
-void Fast3dWindow::AllKeysUp() {
+void Fast3dWindow::AllKeysUp(void) {
     Ship::Context::GetInstance()->GetControlDeck()->ProcessKeyboardEvent(Ship::KbEventType::LUS_KB_EVENT_ALL_KEYS_UP,
                                                                          Ship::KbScancode::LUS_KB_UNKNOWN);
 }

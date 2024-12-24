@@ -23,7 +23,7 @@ void WasapiAudioPlayer::ThrowIfFailed(HRESULT res) {
     }
 }
 
-bool WasapiAudioPlayer::SetupStream() {
+bool WasapiAudioPlayer::SetupStream(void) {
     try {
         ThrowIfFailed(mDeviceEnumerator->GetDefaultAudioEndpoint(eRender, eConsole, &mDevice));
         ThrowIfFailed(mDevice->Activate(IID_IAudioClient, CLSCTX_ALL, nullptr, IID_PPV_ARGS_Helper(&mClient)));
@@ -51,7 +51,7 @@ bool WasapiAudioPlayer::SetupStream() {
     return true;
 }
 
-bool WasapiAudioPlayer::DoInit() {
+bool WasapiAudioPlayer::DoInit(void) {
     try {
         ThrowIfFailed(
             CoCreateInstance(CLSID_MMDeviceEnumerator, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&mDeviceEnumerator)));
@@ -62,7 +62,7 @@ bool WasapiAudioPlayer::DoInit() {
     return true;
 }
 
-int WasapiAudioPlayer::Buffered() {
+int WasapiAudioPlayer::Buffered(void) {
     if (!mInitialized) {
         if (!SetupStream()) {
             return 0;

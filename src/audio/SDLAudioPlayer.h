@@ -9,11 +9,11 @@ class SDLAudioPlayer : public AudioPlayer {
     }
     ~SDLAudioPlayer();
 
-    int Buffered();
+    int Buffered(void);
     void Play(const uint8_t* buf, size_t len);
 
   protected:
-    bool DoInit();
+    bool DoInit(void);
 
   private:
     SDL_AudioDeviceID mDevice;

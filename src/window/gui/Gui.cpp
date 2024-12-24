@@ -221,7 +221,7 @@ void Gui::LoadTextureFromRawImage(const std::string& name, const std::string& pa
     initData->ResourceVersion = 0;
     initData->Path = path;
     auto guiTexture = std::static_pointer_cast<GuiTexture>(
-        Context::GetInstance()->GetResourceManager()->LoadResource(path, false, initData));
+        Context::GetInstance()->GetResourceManager()->LoadResource(path, 0, false, initData));
 
     GfxRenderingAPI* api = gfx_get_current_rendering_api();
 
@@ -647,13 +647,6 @@ void Gui::DrawFloatingWindows() {
             // Set back the GL context for next frame
             SDL_GL_MakeCurrent(backupCurrentWindow, backupCurrentContext);
         } else {
-#ifdef __APPLE__
-            // Metal requires additional frame setup to get ImGui ready for drawing floating windows
-            if (backend == WindowBackend::FAST3D_SDL_METAL) {
-                Metal_SetupFloatingFrame();
-            }
-#endif
-
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
         }
@@ -786,7 +779,7 @@ std::shared_ptr<GuiWindow> Gui::GetGuiWindow(const std::string& name) {
     }
 }
 
-void Gui::LoadGuiTexture(const std::string& name, const Fast::Texture& res, const ImVec4& tint) {
+void Gui::LoadGuiTexture(const std::string& name, const LUS::Texture& res, const ImVec4& tint) {
     GfxRenderingAPI* api = gfx_get_current_rendering_api();
     std::vector<uint8_t> texBuffer;
     texBuffer.reserve(res.Width * res.Height * 4);
@@ -794,7 +787,7 @@ void Gui::LoadGuiTexture(const std::string& name, const Fast::Texture& res, cons
     // For HD textures we need to load the buffer raw (similar to inside gfx_pp)
     if ((res.Flags & TEX_FLAG_LOAD_AS_RAW) != 0) {
         // Raw loading doesn't support TLUT textures
-        if (res.Type == Fast::TextureType::Palette4bpp || res.Type == Fast::TextureType::Palette8bpp) {
+        if (res.Type == LUS::TextureType::Palette4bpp || res.Type == LUS::TextureType::Palette8bpp) {
             // TODO convert other image types
             SPDLOG_WARN("ImGui::ResourceLoad: Attempting to load unsupported image type");
             return;
@@ -803,10 +796,10 @@ void Gui::LoadGuiTexture(const std::string& name, const Fast::Texture& res, cons
         texBuffer.assign(res.ImageData, res.ImageData + (res.Width * res.Height * 4));
     } else {
         switch (res.Type) {
-            case Fast::TextureType::RGBA32bpp:
+            case LUS::TextureType::RGBA32bpp:
                 texBuffer.assign(res.ImageData, res.ImageData + (res.Width * res.Height * 4));
                 break;
-            case Fast::TextureType::RGBA16bpp: {
+            case LUS::TextureType::RGBA16bpp: {
                 for (int32_t i = 0; i < res.Width * res.Height; i++) {
                     uint8_t b1 = res.ImageData[i * 2 + 0];
                     uint8_t b2 = res.ImageData[i * 2 + 1];
@@ -821,7 +814,7 @@ void Gui::LoadGuiTexture(const std::string& name, const Fast::Texture& res, cons
                 }
                 break;
             }
-            case Fast::TextureType::GrayscaleAlpha16bpp: {
+            case LUS::TextureType::GrayscaleAlpha16bpp: {
                 for (int32_t i = 0; i < res.Width * res.Height; i++) {
                     uint8_t color = res.ImageData[i * 2 + 0];
                     uint8_t alpha = res.ImageData[i * 2 + 1];
@@ -833,7 +826,7 @@ void Gui::LoadGuiTexture(const std::string& name, const Fast::Texture& res, cons
                 break;
                 break;
             }
-            case Fast::TextureType::GrayscaleAlpha8bpp: {
+            case LUS::TextureType::GrayscaleAlpha8bpp: {
                 for (int32_t i = 0; i < res.Width * res.Height; i++) {
                     uint8_t ia = res.ImageData[i];
                     uint8_t color = ((ia >> 4) & 0xF) * 255 / 15;
@@ -845,7 +838,7 @@ void Gui::LoadGuiTexture(const std::string& name, const Fast::Texture& res, cons
                 }
                 break;
             }
-            case Fast::TextureType::GrayscaleAlpha4bpp: {
+            case LUS::TextureType::GrayscaleAlpha4bpp: {
                 for (int32_t i = 0; i < res.Width * res.Height; i += 2) {
                     uint8_t b = res.ImageData[i / 2];
 
@@ -867,7 +860,7 @@ void Gui::LoadGuiTexture(const std::string& name, const Fast::Texture& res, cons
                 }
                 break;
             }
-            case Fast::TextureType::Grayscale8bpp: {
+            case LUS::TextureType::Grayscale8bpp: {
                 for (int32_t i = 0; i < res.Width * res.Height; i++) {
                     uint8_t ia = res.ImageData[i];
                     texBuffer.push_back(ia);
@@ -877,7 +870,7 @@ void Gui::LoadGuiTexture(const std::string& name, const Fast::Texture& res, cons
                 }
                 break;
             }
-            case Fast::TextureType::Grayscale4bpp: {
+            case LUS::TextureType::Grayscale4bpp: {
                 for (int32_t i = 0; i < res.Width * res.Height; i += 2) {
                     uint8_t b = res.ImageData[i / 2];
 
@@ -923,7 +916,7 @@ void Gui::LoadGuiTexture(const std::string& name, const Fast::Texture& res, cons
 
 void Gui::LoadGuiTexture(const std::string& name, const std::string& path, const ImVec4& tint) {
     const auto res =
-        static_cast<Fast::Texture*>(Context::GetInstance()->GetResourceManager()->LoadResource(path, true).get());
+        static_cast<LUS::Texture*>(Context::GetInstance()->GetResourceManager()->LoadResource(path, true).get());
 
     LoadGuiTexture(name, *res, tint);
 }

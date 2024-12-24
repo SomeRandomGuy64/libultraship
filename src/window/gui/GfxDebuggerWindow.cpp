@@ -541,26 +541,26 @@ void GfxDebuggerWindow::DrawDisasNode(const F3DGfx* cmd, std::vector<const F3DGf
     }
 }
 
-static const char* getTexType(Fast::TextureType type) {
+static const char* getTexType(LUS::TextureType type) {
     switch (type) {
 
-        case Fast::TextureType::RGBA32bpp:
+        case LUS::TextureType::RGBA32bpp:
             return "RGBA32";
-        case Fast::TextureType::RGBA16bpp:
+        case LUS::TextureType::RGBA16bpp:
             return "RGBA16";
-        case Fast::TextureType::Palette4bpp:
+        case LUS::TextureType::Palette4bpp:
             return "CI4";
-        case Fast::TextureType::Palette8bpp:
+        case LUS::TextureType::Palette8bpp:
             return "CI8";
-        case Fast::TextureType::Grayscale4bpp:
+        case LUS::TextureType::Grayscale4bpp:
             return "I4";
-        case Fast::TextureType::Grayscale8bpp:
+        case LUS::TextureType::Grayscale8bpp:
             return "I8";
-        case Fast::TextureType::GrayscaleAlpha4bpp:
+        case LUS::TextureType::GrayscaleAlpha4bpp:
             return "IA4";
-        case Fast::TextureType::GrayscaleAlpha8bpp:
+        case LUS::TextureType::GrayscaleAlpha8bpp:
             return "IA8";
-        case Fast::TextureType::GrayscaleAlpha16bpp:
+        case LUS::TextureType::GrayscaleAlpha16bpp:
             return "IA16";
         default:
             return "UNKNOWN";
