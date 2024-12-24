@@ -192,7 +192,7 @@ void Gui::ImGuiBackendInit() {
 #elif USE_OPENGLES
             ImGui_ImplOpenGL3_Init("#version 300 es");
 #else
-            ImGui_ImplOpenGL3_Init("#version 120");
+            ImGui_ImplOpenGL3_Init("#version 460");
 #endif
             break;
 #endif
